@@ -9,19 +9,35 @@ import Greeting from "./components/Greeting";
 import Travel from "./screens/week3/Travel";
 import { PaperProvider } from "react-native-paper";
 import TestPaper from "./screens/week4/TestPaper";
+import Health from "./screens/week5/Health";
+import ChartKitScreen from "./screens/week5/ChartKitScreen";
+import Home from "./screens/week6/Home";
+import FlatListExample from "./screens/week6/FlatListExample";
+import { NavigationContainer } from "@react-navigation/native";
+import HomeStack from "./navigations/HomeStack";
+import BottomTab from "./navigations/BottomTab";
+import RootStack from "./navigations/RootStack";
 
 export default function App() {
   return (
+    <NavigationContainer>
+      {/* <HomeStack /> */}
+      {/* <BottomTab /> */}
+      <RootStack />
+
+    </NavigationContainer>
+
     // <Travel />
     // <Welcome />
     // <Ex02 />
-    <PaperProvider>
-      <TestPaper />
-    </PaperProvider>
+    // <PaperProvider>
+    //   <TestPaper />
+    // </PaperProvider>
 
-
-
-
+    // <Health />
+    // <ChartKitScreen />
+    // <Home />
+    // <FlatListExample />
 
     // <View style={{ flex: 1, marginTop: 25 }}>
     //   <TextInput
