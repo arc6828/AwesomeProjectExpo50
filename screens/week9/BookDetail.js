@@ -3,6 +3,7 @@ import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import BookStorage from "../../storages/BookStorage";
+import BookService from "../../services/BookService";
 
 export default function BookDetail() {
     const navigation = useNavigation();
@@ -18,7 +19,9 @@ export default function BookDetail() {
     const deleteBook = async () => {  
         const { id } = route.params;
         //REMOVE BOOK
-        await BookStorage.removeItem(id);
+        // await BookStorage.removeItem(id);
+        
+        await BookService.destroyItem({"id":id});
         //REDIRECT TO
         navigation.navigate("Book");
     };
@@ -34,10 +37,10 @@ export default function BookDetail() {
     };
 
     // TOP RIGHT MENU
-    const TopRightMenu = ()=>(
+    const TopRightMenu = ({b})=>(
         <View style={{ flexDirection: "row", width: 100, justifyContent: "space-around" }}>
             <TouchableOpacity 
-                onPress={() => { navigation.navigate("BookForm", { "id": book.id }); }}
+                onPress={() => { navigation.navigate("BookForm", { "id": b.id }); }}
                 >
                 <FontAwesome name="edit" size={30} />
             </TouchableOpacity>
@@ -48,12 +51,14 @@ export default function BookDetail() {
             </TouchableOpacity>
         </View>
     );
-    const onLoad = async () => {      
-        navigation.setOptions({ headerRight: () => ( <TopRightMenu /> ) });               
+    const onLoad = async () => {   
+        // navigation.setOptions({ headerRight: () => ( <TopRightMenu b={b} /> ) });                  
         const { id } = route.params;
-        let b = await BookStorage.readItemDetail(id);
+        // let b = await BookStorage.readItemDetail(id);
+        let b = await BookService.getItemDetail({"id":id});
         setBook(b);
-
+        
+        navigation.setOptions({ headerRight: () => ( <TopRightMenu b={b} /> ) }); 
     };
     useEffect(() => { onLoad(); }, []);
     // CONDITIONAL RENDERING

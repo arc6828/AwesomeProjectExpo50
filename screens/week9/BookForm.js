@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, ScrollView, Text, TextInput, Button } from "react
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import BookStorage from "../../storages/BookStorage";
+import BookService from "../../services/BookService";
 
 export default function BookForm() {  
   const navigation = useNavigation();
@@ -16,7 +17,9 @@ export default function BookForm() {
   const onLoad = async () => {
     const { id } = route.params;
     if (id) {
-        let book = await BookStorage.readItemDetail(id);   
+        // let book = await BookStorage.readItemDetail(id);   
+        let book = await BookService.getItemDetail({"id":id});
+        console.log(book);
         setKey(book.id);
         setName(book.name);
         setPrice(book.price.toString());
@@ -35,7 +38,14 @@ export default function BookForm() {
     //A NEW ITEM
     let new_data = { "id": key, "name": name, "price": price, "image": image };
     //SAVE
-    await BookStorage.writeItem(new_data);
+    // await BookStorage.writeItem(new_data);
+    const { id } = route.params;
+    if(id){
+      await BookService.updateItem(new_data);
+    }else{
+      await BookService.storeItem(new_data);
+    }
+
     //REDIRECT TO
     navigation.navigate("Book");
   };

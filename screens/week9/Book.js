@@ -3,6 +3,7 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BookStorage from "../../storages/BookStorage";
+import BookService from "../../services/BookService";
 
 export default function Book() {    
     const navigation = useNavigation(); 
@@ -14,8 +15,21 @@ export default function Book() {
     ]);    
     const [refresh, setRefresh] = useState(false);
 
+    // useEffect(async () => {
+    //     try {
+    //       const res = await fetch('http://127.0.0.1:8000/api/book/')
+    //       const datas = await res.json()
+    //       console.log(datas)
+    //       setDatas(datas)
+    //     } catch (error) {
+    //         console.log(error)
+    //       }
+    //   }, [])     
+
     const loadBooks = async () => { 
-        let books = await BookStorage.readItems();
+        // let books = await BookStorage.readItems();
+        let books = await BookService.getItems();
+        
         setBooks(books);
     };
     // useEffect(() => { loadBooks(); }, []);
